@@ -12,6 +12,8 @@ $(function () {
     $("#message-box").submit(function (e) {
         e.preventDefault();
         socket.emit("mensaje-del-cliente", message.val())
+
+        message.val('')
     })
     
     socket.on("mensaje-del-servidor", function (data){
