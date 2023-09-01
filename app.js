@@ -1,23 +1,19 @@
 const http = require("http")
 const express = require("express");
 const app = express();
-const io = require('socket.io');
+const morgan = require("morgan")
 
 const server = http.createServer(app);
+
+//configuracion del servidor
 app.set("port", 3000);
+app.use(morgan())
 app.use(express.static(__dirname + "/public"));
 
+//inicializacion del servidor
 server.listen(app.get("port"), function () {
     console.log("el servidor se ha iniciado");
 })
 
-let sockets = io(server);
-
-sockets.on('connection', function(socket){
-    console.log("nuevo cliente conectado"); 
-    
-    socket.on("mensaje-del-cliente", function(data){
-        sockets.emit("mensaje-del-servidor", data)
-    })
-
-})
+//este es la logica de los sockets
+require('./sockets')(server)
